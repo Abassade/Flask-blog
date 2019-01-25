@@ -1,5 +1,6 @@
 import os
 import time
+from PIL import Image
 from flask import render_template, url_for, flash, redirect, request
 from blogapp import app, db, bcrypt
 from blogapp.forms import RegistrationForm, LoginForm, UpdateAccountForm
@@ -46,6 +47,8 @@ def register():
         db.session.add(user)
         db.session.commit()
         flash('Your account has been created! You can now log in', 'success')
+        current_user.username = form.username.data
+        current_user.email = form.email.data
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
@@ -79,7 +82,10 @@ def save_picture(form_picture):
     _, f_ext = os.path.splitext(form_picture.filename)
     picture_var = random_var+f_ext
     picture_path = os.path.join(app.root_path, 'static/profile_pics', picture_var)
-    form_picture.save(picture_path)
+    output_qlt = (125, 125)
+    image = Image.open(form_picture)
+    image.thumbnail(output_qlt)
+    image.save(picture_path)
 
     return picture_var
 
