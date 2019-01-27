@@ -22,8 +22,8 @@
         {% else %}
           <a class="btn btn-outline-info mb-4" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
         {% endif %}
-      {% else %}
+        {% else %}
         ...
       {% endif %}
-    {% endfor %}
+{% endfor %}
 {% endblock content %}
